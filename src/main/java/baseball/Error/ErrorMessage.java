@@ -1,4 +1,4 @@
-package baseball;
+package baseball.Error;
 
 public enum ErrorMessage {
     NUMBERS_OVERSIZE("입력하신 숫자는 3자리가 넘어갑니다. 3자리 숫자를 입력해주세요."),

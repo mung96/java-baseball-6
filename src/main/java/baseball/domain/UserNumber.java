@@ -1,78 +1,78 @@
-package baseball;
+package baseball.domain;
+
+import baseball.Error.ErrorMessage;
 
 import java.util.List;
-
-import static baseball.ErrorMessage.*;
 
 public class UserNumber {
 
     private static final Integer INPUT_SIZE = 3;
+    private String inputStr;
     private List<Integer> numbers;
 
     public List<Integer> getNumbers() {
         return numbers;
     }
 
-    public UserNumber(String inputStr) {
-        inputStr = deleteBlank(inputStr);
-        validate(inputStr);
-        numbers = convertNumbers(inputStr);
+    public UserNumber(String beforeInputStr) {
+        this.inputStr = deleteBlank(beforeInputStr);
+        validate();
+        numbers = convertNumbers();
     }
 
-    private static String deleteBlank(String inputStr) {
-        return inputStr.replace(" ","");
+    private String deleteBlank(String beforeInputStr) {
+        return inputStr.replace(" ", "");
     }
 
-    private void validate(String inputStr) {
-        validateNotNumber(inputStr);
-        validateOverSize(inputStr);
-        validateUnderSize(inputStr);
-        validateErrorNumber(inputStr);
-        validateDuplicateNumber(inputStr);
+    private void validate() {
+        validateNotNumber();
+        validateOverSize();
+        validateUnderSize();
+        validateErrorNumber();
+        validateDuplicateNumber();
     }
 
-    private static void validateNotNumber(String inputStr) {
-        if (isNotNumber(inputStr)) {
-            throw new IllegalArgumentException(INCLUDE_NOT_NUMBER.getMessage());
+    private void validateNotNumber() {
+        if (isNotNumber()) {
+            throw new IllegalArgumentException(ErrorMessage.INCLUDE_NOT_NUMBER.getMessage());
         }
     }
 
-    private static boolean isNotNumber(String inputStr) {
+    private boolean isNotNumber() {
         return !inputStr.chars().allMatch(ch -> Character.isDigit(ch));
     }
 
-    private static void validateOverSize(String inputStr) {
+    private void validateOverSize() {
         if (inputStr.length() > INPUT_SIZE) {
-            throw new IllegalArgumentException(NUMBERS_OVERSIZE.getMessage());
+            throw new IllegalArgumentException(ErrorMessage.NUMBERS_OVERSIZE.getMessage());
         }
     }
 
-    private static void validateUnderSize(String inputStr) {
+    private void validateUnderSize() {
         if (inputStr.length() < INPUT_SIZE) {
-            throw new IllegalArgumentException(NUMBERS_UNDERSIZE.getMessage());
+            throw new IllegalArgumentException(ErrorMessage.NUMBERS_UNDERSIZE.getMessage());
         }
     }
 
-    private static void validateErrorNumber(String inputStr) {
+    private void validateErrorNumber() {
         if (inputStr.contains("0")) {
-            throw new IllegalArgumentException(INCLUDE_INVALID_NUMBER.getMessage());
+            throw new IllegalArgumentException(ErrorMessage.INCLUDE_INVALID_NUMBER.getMessage());
         }
     }
 
-    private static void validateDuplicateNumber(String inputStr) {
-        if (hasDuplicateNumber(inputStr)) {
-            throw new IllegalArgumentException(INCLUDE_DUPLICATE_NUMBER.getMessage());
+    private void validateDuplicateNumber() {
+        if (hasDuplicateNumber()) {
+            throw new IllegalArgumentException(ErrorMessage.INCLUDE_DUPLICATE_NUMBER.getMessage());
         }
     }
 
-    private static boolean hasDuplicateNumber(String inputStr) {
+    private boolean hasDuplicateNumber() {
         return inputStr.chars().distinct().count() != inputStr.length();
     }
 
-    private static List<Integer> convertNumbers(String inputStr) {
+    private List<Integer> convertNumbers() {
         return inputStr.chars()
                 .mapToObj(Character::getNumericValue)
                 .toList();
     }
-
 }
